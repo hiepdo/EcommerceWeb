@@ -21,6 +21,7 @@ class Item(models.Model):
     discount_price= models.FloatField(blank= True, null = True)
     category = models.CharField(choices=CATEGORY_CHOICES, max_length=2)
     label = models.CharField(choices=LABEL_CHOICES, max_length=1)
+    image = models.ImageField(upload_to='product/',blank= True)
     slug=models.SlugField()
 
     def __str__(self):
