@@ -47,6 +47,21 @@ class OrderItem(models.Model):
     def __str__(self):
         return f"{self.quantity} of {self.item.title}"
 
+    def total_price(self):
+        if self.item.discount_price:
+            return self.item.discount_price * self.quantity
+        else:
+            return self.item.price * self.quantity
+
+    def amount_saved(self):
+        return (self.item.price - self.item.discount_price) * self.quantity
+
+
+
+
+
+
+
 class Order(models.Model):
     user=models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
     items=models.ManyToManyField(OrderItem)
@@ -56,3 +71,11 @@ class Order(models.Model):
 
     def __str__(self):
         return self.user.username
+
+    def final_total_price(self):
+        total = 0
+        for order_item in self.items.all():
+            total += order_item.total_price()
+        return total
+
+
